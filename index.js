@@ -23,7 +23,7 @@ app.get("/", function (req, res) {
   let url = "https://open.rsyd.dk/redcap_uddannelse/api/";
 
   let data = new FormData();
-  data.append("token", "token");
+  data.append("token", token);
   data.append("content", "record");
   data.append("format", "json");
   data.append("type", "flat");
@@ -38,8 +38,17 @@ app.get("/", function (req, res) {
 
   let config = {
     headers: {
-      Accept: "application/json, text/plain, */*",
-      "x-requested-with": "application/json",
+      connection: "keep-alive",
+      accept: "application/json, text/plain, */*",
+      "user-agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.193 Safari/537.36",
+      origin: "http://localhost:3001",
+      "sec-fetch-site": "same-site",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-dest": "empty",
+      referer: "http://localhost:3001/",
+      "accept-encoding": "gzip, deflate, br",
+      "accept-language": "da,en-US;q=0.9,en;q=0.8",
     },
   };
 
