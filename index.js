@@ -9,48 +9,33 @@ app.use(bodyParser.json());
 
 app.listen(3001, () => {
   console.log("Started on port 3001");
-});
-
-app.get("/", function (req, res) {
-  ////////////////////
-  // REDCAP REQUEST //
-  ////////////////////
   let url = "https://open.rsyd.dk/redcap_uddannelse/api/";
-
   let data = new FormData();
   data.append("token", token);
   data.append("content", "record");
   data.append("format", "json");
-  data.append("type", "flat");
-  data.append("overwriteBehavior", "overwrite");
-  data.append("forceAutoNumber", "false");
-  data.append(
-    "data",
-    '[{"record_id":"3", "firstname":"TestName1", "lastname": "TestName2","age":"3","my_first_instrument_complete":"2" }]'
-  );
-  data.append("returnContent", "count");
-  data.append("returnFormat", "json");
 
   axios
-    .post(url, data)
+    .post(url, data, { headers: data.getHeaders() })
     .then(function (response) {
-      console.log("**RESPONSE**");
+      console.log(
+        "RESPONSE - " + response.status + " - " + response.statusText
+      );
       console.log(response.data);
-      console.log(response.status);
-      console.log(response.statusText);
-      console.log(response.headers);
-      console.log(response.config);
     })
     .catch(function (error) {
-      console.log("**ERROR**");
-      console.log(error.response.status);
+      console.log(
+        "ERROR - " + error.response.status + " - " + error.response.statusText
+      );
       console.log(error.response.data);
-      console.log(error.response.headers);
     });
+});
 
-  ////////////////////
-  // REDCAP REQUEST //
-  ////////////////////
+app.get("/", function (req, res) {
+  // res.send("Hello there!");
+  // let firstname = req.body.firstname;
+  // let lastname = req.body.lastname;
+  // console.log("Fullname: " + firstname + " " + lastname);
 });
 
 app.get("*", function (req, res) {
