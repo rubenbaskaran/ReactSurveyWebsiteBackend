@@ -12,11 +12,6 @@ app.listen(3001, () => {
 });
 
 app.get("/", function (req, res) {
-  // res.send("Hello there!");
-  // let firstname = req.body.firstname;
-  // let lastname = req.body.lastname;
-  // console.log("Fullname: " + firstname + " " + lastname);
-
   ////////////////////
   // REDCAP REQUEST //
   ////////////////////
@@ -36,31 +31,21 @@ app.get("/", function (req, res) {
   data.append("returnContent", "count");
   data.append("returnFormat", "json");
 
-  let config = {
-    headers: {
-      connection: "keep-alive",
-      accept: "application/json, text/plain, */*",
-      "user-agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.193 Safari/537.36",
-      origin: "http://localhost:3001",
-      "sec-fetch-site": "same-site",
-      "sec-fetch-mode": "cors",
-      "sec-fetch-dest": "empty",
-      referer: "http://localhost:3001/",
-      "accept-encoding": "gzip, deflate, br",
-      "accept-language": "da,en-US;q=0.9,en;q=0.8",
-    },
-  };
-
   axios
-    .post(url, data, config)
+    .post(url, data)
     .then(function (response) {
-      console.log("RESPONSE:");
-      console.log(response);
+      console.log("**RESPONSE**");
+      console.log(response.data);
+      console.log(response.status);
+      console.log(response.statusText);
+      console.log(response.headers);
+      console.log(response.config);
     })
     .catch(function (error) {
-      console.log("ERROR:");
-      console.log(error);
+      console.log("**ERROR**");
+      console.log(error.response.status);
+      console.log(error.response.data);
+      console.log(error.response.headers);
     });
 
   ////////////////////
