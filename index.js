@@ -1,8 +1,8 @@
-var express = require("express");
-var bodyParser = require("body-parser");
-var token = require("./token");
-var axios = require("axios");
-var FormData = require("form-data");
+const express = require("express");
+const bodyParser = require("body-parser");
+const token = require("./token");
+const axios = require("axios");
+const FormData = require("form-data");
 
 var app = express();
 app.use(bodyParser.json());
@@ -52,17 +52,16 @@ app.get("/", function (req, res) {
     },
   };
 
-  async function start() {
-    try {
-      let response = await axios.post(url, data, config);
+  axios
+    .post(url, data, config)
+    .then(function (response) {
       console.log("RESPONSE:");
       console.log(response);
-    } catch (err) {
+    })
+    .catch(function (error) {
       console.log("ERROR:");
-      console.log(err);
-    }
-  }
-  start();
+      console.log(error);
+    });
 
   ////////////////////
   // REDCAP REQUEST //
