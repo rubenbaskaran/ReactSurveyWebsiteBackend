@@ -36,8 +36,19 @@ app.listen(3001, () => {
   console.log("Started on port 3001");
 });
 
+// TODO: Call right before saving the record, and then return ID to client
+app.get("/nextid", function (req, res) {
+  let data = new FormData();
+  data.append("content", "generateNextRecordName");
+
+  CallRedcapApi(req, res, data);
+});
+
 app.get("/getall", function (req, res) {
-  CallRedcapApi(req, res, null);
+  let data = new FormData();
+  data.append("content", "record");
+
+  CallRedcapApi(req, res, data);
 });
 
 app.post("/update", function (req, res) {
@@ -53,21 +64,19 @@ app.post("/update", function (req, res) {
     },
   ];
 
-  CallRedcapApi(req, res, payload);
+  let data = new FormData();
+  data.append("content", "record");
+  data.append("data", JSON.stringify(payload));
+
+  CallRedcapApi(req, res, data);
 });
 
-function CallRedcapApi(req, res, payload) {
+function CallRedcapApi(req, res, data) {
   const url = "https://open.rsyd.dk/redcap_uddannelse/api/";
-  let data = new FormData();
   data.append("token", token);
-  data.append("content", "record");
   data.append("format", "json");
   // data.append("overwriteBehavior", "overwrite");
   // data.append("forceAutoNumber", "false");
-
-  if (payload !== undefined && payload !== null) {
-    data.append("data", JSON.stringify(payload));
-  }
 
   axios
     .post(url, data, { headers: data.getHeaders() })
@@ -80,7 +89,7 @@ function CallRedcapApi(req, res, payload) {
           " - " +
           response.statusText
       );
-      res.send(response.data);
+      res.json({ responseData: response.data });
     })
     .catch(function (error) {
       console.log(
@@ -92,7 +101,7 @@ function CallRedcapApi(req, res, payload) {
           error.response.statusText
       );
       console.log(error.response.data);
-      res.send(error.response.data);
+      res.json({ errorData: error.response.data });
     });
 }
 
