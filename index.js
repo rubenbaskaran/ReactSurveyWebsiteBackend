@@ -34,14 +34,16 @@ app.use(function (req, res, next) {
 
 app.listen(3001, () => {
   console.log("Started on port 3001");
-  RedcapPost();
+});
+
+app.get("/getall", function (req, res) {
+  CallRedcapApi(req, res, null);
 });
 
 app.post("/update", function (req, res) {
   let firstname = req.body.firstname;
   let lastname = req.body.lastname;
-  console.log("Fullname: " + firstname + " " + lastname);
-  const input = [
+  const payload = [
     {
       record_id: "3",
       firstname: firstname,
@@ -50,9 +52,49 @@ app.post("/update", function (req, res) {
       my_first_instrument_complete: "2",
     },
   ];
-  RedcapPost(input);
-  res.send("OK");
+
+  CallRedcapApi(req, res, payload);
 });
+
+function CallRedcapApi(req, res, payload) {
+  const url = "https://open.rsyd.dk/redcap_uddannelse/api/";
+  let data = new FormData();
+  data.append("token", token);
+  data.append("content", "record");
+  data.append("format", "json");
+  // data.append("overwriteBehavior", "overwrite");
+  // data.append("forceAutoNumber", "false");
+
+  if (payload !== undefined && payload !== null) {
+    data.append("data", JSON.stringify(payload));
+  }
+
+  axios
+    .post(url, data, { headers: data.getHeaders() })
+    .then(function (response) {
+      console.log(
+        "REQUEST - " +
+          req.route.path +
+          " - RESPONSE - " +
+          response.status +
+          " - " +
+          response.statusText
+      );
+      res.send(response.data);
+    })
+    .catch(function (error) {
+      console.log(
+        "REQUEST - " +
+          req.route.path +
+          " - ERROR - " +
+          error.response.status +
+          " - " +
+          error.response.statusText
+      );
+      console.log(error.response.data);
+      res.send(error.response.data);
+    });
+}
 
 app.get("*", function (req, res) {
   res.send("This is the default GET route");
@@ -61,32 +103,3 @@ app.get("*", function (req, res) {
 app.post("*", function (req, res) {
   res.send("This is the default POST route");
 });
-
-function RedcapPost(input) {
-  let url = "https://open.rsyd.dk/redcap_uddannelse/api/";
-  let data = new FormData();
-  data.append("token", token);
-  data.append("content", "record");
-  data.append("format", "json");
-  // data.append("overwriteBehavior", "overwrite");
-  // data.append("forceAutoNumber", "false");
-
-  if (input != null) {
-    data.append("data", JSON.stringify(input));
-  }
-
-  axios
-    .post(url, data, { headers: data.getHeaders() })
-    .then(function (response) {
-      console.log(
-        "RESPONSE - " + response.status + " - " + response.statusText
-      );
-      console.log(response.data);
-    })
-    .catch(function (error) {
-      console.log(
-        "ERROR - " + error.response.status + " - " + error.response.statusText
-      );
-      console.log(error.response.data);
-    });
-}
