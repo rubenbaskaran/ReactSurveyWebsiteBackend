@@ -7,7 +7,7 @@ const FormData = require("form-data");
 var app = express();
 app.use(bodyParser.json());
 
-// Add headers
+// Add headers (TODO: remove in production)
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -36,37 +36,53 @@ app.listen(3001, () => {
   console.log("Started on port 3001");
 });
 
-// TODO: Call right before saving the record, and then return ID to client
-app.get("/nextid", function (req, res) {
+app.get("/getall", function (req, res) {
   let data = new FormData();
-  data.append("content", "generateNextRecordName");
-
   CallRedcapApi(req, res, data);
 });
 
-app.get("/getall", function (req, res) {
+app.post("/create", function (req, res) {
+  let record_id = req.body.record_id;
+  let firstname = req.body.firstname;
+  let lastname = req.body.lastname;
+  let age = req.body.age;
+  let status = req.body.status;
+  const record = [
+    {
+      record_id: record_id,
+      firstname: firstname,
+      lastname: lastname,
+      age: age,
+      my_first_instrument_complete: status,
+    },
+  ];
+
   let data = new FormData();
-  data.append("content", "record");
+  data.append("forceAutoNumber", "true");
+  data.append("returnContent", "auto_ids");
+  data.append("data", JSON.stringify(record));
 
   CallRedcapApi(req, res, data);
 });
 
 app.post("/update", function (req, res) {
+  let record_id = req.body.record_id;
   let firstname = req.body.firstname;
   let lastname = req.body.lastname;
-  const payload = [
+  let age = req.body.age;
+  let status = req.body.status;
+  const record = [
     {
-      record_id: "3",
+      record_id: record_id,
       firstname: firstname,
       lastname: lastname,
-      age: "3",
-      my_first_instrument_complete: "2",
+      age: age,
+      my_first_instrument_complete: status,
     },
   ];
 
   let data = new FormData();
-  data.append("content", "record");
-  data.append("data", JSON.stringify(payload));
+  data.append("data", JSON.stringify(record));
 
   CallRedcapApi(req, res, data);
 });
@@ -74,9 +90,8 @@ app.post("/update", function (req, res) {
 function CallRedcapApi(req, res, data) {
   const url = "https://open.rsyd.dk/redcap_uddannelse/api/";
   data.append("token", token);
+  data.append("content", "record");
   data.append("format", "json");
-  // data.append("overwriteBehavior", "overwrite");
-  // data.append("forceAutoNumber", "false");
 
   axios
     .post(url, data, { headers: data.getHeaders() })
