@@ -88,7 +88,7 @@ app.post("/update", function (req, res) {
 });
 
 function CallRedcapApi(req, res, data) {
-  const url = "https://open.rsyd.dk/redcap_uddannelse/api/";
+  const url = "https://open.rsyd.dk/redcap/api/";
   data.append("token", token);
   data.append("content", "record");
   data.append("format", "json");
