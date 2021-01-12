@@ -42,6 +42,7 @@ app.get("/getall", function (req, res) {
 });
 
 app.post("/create", function (req, res) {
+  let record_id = req.body.record_id;
   let question_1 = req.body.question_1;
   let question_2 = req.body.question_2;
   let question_3 = req.body.question_3;
@@ -102,6 +103,7 @@ app.post("/create", function (req, res) {
   let question_58 = req.body.question_58;
   const record = [
     {
+      record_id: record_id,
       question_1: question_1,
       question_2: question_2,
       question_3: question_3,
@@ -160,6 +162,7 @@ app.post("/create", function (req, res) {
       question_56: question_56,
       question_57: question_57,
       question_58: question_58,
+      answers_complete: 2,
     },
   ];
 
@@ -292,6 +295,7 @@ app.post("/update", function (req, res) {
       question_56: question_56,
       question_57: question_57,
       question_58: question_58,
+      answers_complete: 2,
     },
   ];
 
