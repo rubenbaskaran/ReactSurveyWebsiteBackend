@@ -60,6 +60,7 @@ function CallRedcapApi(req, res, data) {
   const record = [
     {
       record_id: req.body.record_id,
+      video_id: req.body.video_id,
       question_1: req.body.question_1,
       question_2: req.body.question_2,
       question_3: req.body.question_3,
