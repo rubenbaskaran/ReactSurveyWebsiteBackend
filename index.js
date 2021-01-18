@@ -36,11 +36,6 @@ app.listen(3001, () => {
   console.log("Started on port 3001");
 });
 
-app.get("/getall", function (req, res) {
-  let data = new FormData();
-  CallRedcapApi(req, res, data);
-});
-
 app.post("/create", function (req, res) {
   let data = new FormData();
   data.append("forceAutoNumber", "true");
