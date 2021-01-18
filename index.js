@@ -59,6 +59,7 @@ app.post("/update", function (req, res) {
   if (req.body.record_id === "null") {
     return;
   }
+
   let data = new FormData();
   CallRedcapApi(req, res, data);
 });
