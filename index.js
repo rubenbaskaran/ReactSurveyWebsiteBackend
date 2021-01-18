@@ -32,9 +32,17 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.listen(3001, () => {
-  console.log("Started on port 3001");
+const PORT = process.env.PORT || 3001;
+
+app.listen(PORT, () => {
+  console.log(`Started on port ${PORT}`);
 });
+
+// app.use(express.static(path.join(__dirname, 'build')));
+
+// app.get('*', function(req, res) {
+//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 
 app.post("/create", function (req, res) {
   let data = new FormData();
