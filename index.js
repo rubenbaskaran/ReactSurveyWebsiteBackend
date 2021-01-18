@@ -4,6 +4,8 @@ const token = require("./token");
 const axios = require("axios");
 const FormData = require("form-data");
 
+// heroku logs -a respekt-backend
+
 var app = express();
 app.use(bodyParser.json());
 
