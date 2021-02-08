@@ -12,10 +12,7 @@ app.use(bodyParser.json());
 // Add headers (TODO: remove in production)
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://respekt-frontend.herokuapp.com"
-  );
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 
   // Request methods you wish to allow
   res.setHeader(
@@ -136,6 +133,7 @@ function CallRedcapApi(req, res, data) {
       question_57: req.body.question_57,
       question_58: req.body.question_58,
       answers_complete: req.body.answers_complete,
+      emails_complete: req.body.emails_complete,
     },
   ];
 
