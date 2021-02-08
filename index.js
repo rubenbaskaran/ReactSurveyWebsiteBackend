@@ -74,6 +74,8 @@ function CallRedcapApi(req, res, data) {
     {
       record_id: req.body.record_id,
       video_id: req.body.video_id,
+      timestamp_start: req.body.timestamp_start,
+      timestamp_end: req.body.timestamp_end,
       question_1: req.body.question_1,
       question_2: req.body.question_2,
       question_3: req.body.question_3,
