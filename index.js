@@ -135,9 +135,9 @@ function CallRedcapApi(req, res, data) {
       question_55: req.body.question_55,
       question_56: req.body.question_56,
       question_57: req.body.question_57,
-      // question_58: req.body.question_58,
+      question_58: req.body.question_58,
       answers_complete: req.body.answers_complete,
-      // emails_complete: req.body.emails_complete,
+      emails_complete: req.body.emails_complete,
     },
   ];
 
