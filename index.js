@@ -4,18 +4,12 @@ const token = require("./token");
 const axios = require("axios");
 const FormData = require("form-data");
 
-// heroku logs -a respekt-backend
-
 var app = express();
 app.use(bodyParser.json());
 
-// Add headers (TODO: remove in production)
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://respekt-frontend.herokuapp.com"
-  );
+  res.setHeader("Access-Control-Allow-Origin", "https://reach.sdu.dk");
 
   // Request methods you wish to allow
   res.setHeader(
@@ -42,12 +36,6 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Started on port ${PORT}`);
 });
-
-// app.use(express.static(path.join(__dirname, 'build')));
-
-// app.get('*', function(req, res) {
-//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
 
 app.post("/create", function (req, res) {
   if (req.body.record_id !== "null") {
