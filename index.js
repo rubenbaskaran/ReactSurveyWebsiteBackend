@@ -131,34 +131,13 @@ function CallRedcapApi(req, res, data) {
   axios
     .post(url, data, { headers: data.getHeaders() })
     .then(function (response) {
-      console.log(
-        "REQUEST - " +
-          req.route.path +
-          " - RESPONSE - " +
-          response.status +
-          " - " +
-          response.statusText
-      );
       res.json({ responseData: response.data });
     })
     .catch(function (error) {
-      console.log(
-        "REQUEST - " +
-          req.route.path +
-          " - ERROR - " +
-          error.response.status +
-          " - " +
-          error.response.statusText
-      );
-      console.log(error.response.data);
       res.json({ errorData: error.response.data });
     });
 }
 
 app.get("*", function (req, res) {
-  res.send("This is the default GET route");
-});
-
-app.post("*", function (req, res) {
-  res.send("This is the default POST route");
+  res.send("This is the default route");
 });
